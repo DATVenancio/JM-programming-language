@@ -7,7 +7,6 @@ indentation = '''
     '''
 
 # Syntax Analysis
-
 def p_empty(p): 
     '''empty :
     '''
@@ -22,7 +21,6 @@ def p_main_program(p):
     '''
     with open(f"{filename}.py", "w") as output_file, open(f"./logs/erros_{filename}.txt", "w") as error_log:
         output_file.write(f"{p[3]}")
-        #error_log.write(f"")
     output_file.close()
     error_log.close()
 
@@ -30,7 +28,6 @@ def p_code_statement(p):
     '''codigo   : condicional
                 | atribuicao end
                 | entrada end
-                | saida_variavel end
                 | saida_string end
                 | declaracao
                 | while
@@ -99,15 +96,16 @@ def p_input_statement(p):
     '''
     p[0] = f"{p[1]} = input({p[5]})"
 
-def p_variable_output(p): 
-    '''saida_variavel : PRINT ABRE_PARENTESES expression FECHA_PARENTESES 
-    '''
-    p[0] = f'print({format_string_concatenation(p[3].split("+"))}, end="")'
-
 def p_string_output(p): 
     '''saida_string : WRITE ABRE_PARENTESES string_expression FECHA_PARENTESES 
+                    | WRITE ABRE_PARENTESES expression FECHA_PARENTESES 
     '''
-    p[0] = f'print({p[3]}, end="")'
+    if len(p) == 4:
+        # Handle string_expression case
+        p[0] = f'print({p[3]}, end="")'
+    else:
+        # Handle expression case (for arithmetic operations, variables, etc.)
+        p[0] = f'print({format_string_concatenation(p[3].split("+"))}, end="")'
 
 def p_string_expression(p):
     '''string_expression : STRING
@@ -316,5 +314,5 @@ def p_error(p):
         syntax_errors.append(p)
         print("PARSING ERROR - Token not recognized:", p)
 
-parser = yacc.yacc(start = 'main') #errorlog=lex.NullLogger(),
+parser = yacc.yacc(start = 'main')
 result = parser.parse(source_code)

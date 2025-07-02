@@ -33,13 +33,10 @@ def format_string_concatenation(string_list):
 
     for item in string_list:
         if isinstance(item, str) and item.strip().startswith('"') and item.strip().endswith('"'):
-            # If the item is a string in quotes, keep it unchanged
             result_list.append(item)
         elif not inside_quotes and item == '+':
-            # If not between quotes and it's an addition operator, keep it unchanged
             result_list.append(item)
         else:
-            # Otherwise, convert to string using str()
             result_list.append('str('+item+')')
 
     return " + ".join(result_list)

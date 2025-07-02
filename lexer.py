@@ -10,7 +10,6 @@ reserved_words = {
     'if' : 'IF',
     'else' : 'ELSE',
     'while' : 'WHILE',
-    'print' : 'PRINT',
     'read' : 'READ',
     'start' : 'INICIO',
     'end' : 'FIM',
@@ -43,10 +42,8 @@ tokens = [
     'DIFERENTE',               # !=
     'IGUAL',                   # =
     'COMENTARIO',              # comentario
-    'QUEBRA_LINHA',            # \n
     'IGNORE',                  # Ignorar espaços
     'STRING',                  # string literals
-
 
 ] + list(reserved_words.values()) 
 
@@ -57,7 +54,6 @@ t_IF                    = r'if'
 t_ELSE                  = r'else'
 t_WHILE                 = r'while'
 t_READ                  = r'read'
-t_PRINT                 = r'print'
 t_WRITE                 = r'write'
 t_TIPO_INT              = r'int'
 t_TIPO_CHAR             = r'char'
@@ -110,20 +106,12 @@ def t_VARIAVEL(t):
     return t
 
 def t_STRING(t):
-    r'"[^"]*"'
+    r'"[^"\\]*(?:\\.[^"\\]*)*"'
     return t
 
 def t_COMENTARIO(t):
      r'\#.*'
      return(t)
-     
-def t_QUEBRA_LINHA(t):
-    r'"\n"'
-    t.lexer.lineno += len(t.value)
-    return t
-
-
-
 
 precedence = (
     ('left','SOMA','SUB'),
@@ -149,7 +137,6 @@ for line in source_file:
 
 lexer = lex.lex()
 lexer.input(source_code)
-
 
 filename = filename[filename.rfind("/")+1:]
 with open(f"./logs/tokens_{filename}.txt", "w") as token_file, open(f"./logs/erros_{filename}.txt", "w+") as error_file:
