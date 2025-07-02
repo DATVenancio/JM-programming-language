@@ -1,0 +1,18 @@
+start { 
+    # Calculate (A+B)*(C/D) and check if result is greater or lower than 10
+
+    int A = read("Enter value for A: ");
+    int B = read("Enter value for B: ");
+    int C = read("Enter value for C: ");
+    int D = read("Enter value for D: ");
+    
+    int result;
+    result = (A + B) * (C / D);
+
+    if (result > 10){
+        write("The result " + result + " is greater than 10" + "\n");
+    } else {
+        write("The result " + result + " is lower than or equal to 10" + "\n");
+    }
+
+} end

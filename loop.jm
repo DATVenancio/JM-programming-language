@@ -1,0 +1,11 @@
+start { 
+    # Print numbers from 1 to 10 using a while loop
+
+    int i = 1;
+    
+    while (i <= 10) {
+        write("Number: " + i + "\n");
+        i = i + 1;
+    }
+
+} end 
